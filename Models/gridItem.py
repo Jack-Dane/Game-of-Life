@@ -10,7 +10,8 @@ class GridItem(Model):
         super(GridItem, self).__init__()
         self.x = x
         self.y = y
-        self.active = True if random.randint(0, 2) == 1 else False
+        self.active = True if random.randint(0, 5) == 1 else False
+        self.nextIteration = False
 
     def __str__(self):
         return "1" if self.active else "0"
@@ -18,8 +19,8 @@ class GridItem(Model):
     @property
     def color(self):
         if self.active:
-            return 0, 0, 0
-        return 170, 170, 170
+            return 170, 170, 170
+        return 0, 0, 0
 
     def markActive(self):
         self.active = True
@@ -41,8 +42,11 @@ class GridItem(Model):
 
     def shouldDie(self, totalSurrounding):
         if totalSurrounding not in range(2, 4):
-            self.active = False
+            self.nextIteration = False
 
     def shouldReproduce(self, totalSurrounding):
         if totalSurrounding == 3:
-            self.active = True
+            self.nextIteration = True
+
+    def update(self):
+        self.active = self.nextIteration

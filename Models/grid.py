@@ -30,7 +30,13 @@ class Grid(Model):
 
                 totalSurrounding = self.countSurroundingActiveGridItems(x, y)
                 currentItem.shouldChange(totalSurrounding)
+        self.updateAllGridItemsNextIteration()
         self.notifyObservers()
+
+    def updateAllGridItemsNextIteration(self):
+        for y in range(self.rows):
+            for x in range(self.columns):
+                self.grid[y][x].update()
 
     def countSurroundingActiveGridItems(self, x, y):
         surroundCount = 0
