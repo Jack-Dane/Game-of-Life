@@ -1,6 +1,7 @@
 
 from Models.gridItem import GridItem
 from Models.model import Model
+from Models.helpers import iterateGrid
 
 
 class Grid(Model):
@@ -10,6 +11,7 @@ class Grid(Model):
         self.rows = rows
         self.columns = columns
         self.grid = []
+        self.same = False
 
     def createGrid(self):
         for row in range(self.rows):
@@ -24,19 +26,20 @@ class Grid(Model):
         """
         Update the list items to reflect the game of life
         """
-        for y in range(self.rows):
-            for x in range(self.columns):
-                currentItem = self.grid[y][x]
-
-                totalSurrounding = self.countSurroundingActiveGridItems(x, y)
-                currentItem.shouldChange(totalSurrounding)
+        self.updateGridItem()
+        self.same = self.checkSame()
         self.updateAllGridItemsNextIteration()
         self.notifyObservers()
 
-    def updateAllGridItemsNextIteration(self):
-        for y in range(self.rows):
-            for x in range(self.columns):
-                self.grid[y][x].update()
+    @iterateGrid
+    def updateGridItem(self, x, y):
+        currentItem = self.grid[y][x]
+        totalSurrounding = self.countSurroundingActiveGridItems(x, y)
+        currentItem.shouldChange(totalSurrounding)
+
+    @iterateGrid
+    def updateAllGridItemsNextIteration(self, x, y):
+        self.grid[y][x].update()
 
     def countSurroundingActiveGridItems(self, x, y):
         surroundCount = 0
@@ -53,6 +56,13 @@ class Grid(Model):
         except IndexError:
             pass
         return False
+
+    def checkSame(self):
+        for y in range(self.rows):
+            for x in range(self.columns):
+                if not self.grid[x][y].checkSame():
+                    return False
+        return True
 
     def getData(self):
         return self.grid

@@ -1,5 +1,8 @@
 
-class PrintView:
+from Views.view import View
+
+
+class PrintView(View):
 
     def notify(self, subject):
         self.clearScreen()

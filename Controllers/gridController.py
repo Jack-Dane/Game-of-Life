@@ -18,7 +18,7 @@ class GridController(Thread):
         """
         Start the process on a thread
         """
-        while True:
+        while not self.grid.same:
             if not self.paused:
                 self.grid.update()
             time.sleep(.1)

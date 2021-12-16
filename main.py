@@ -1,4 +1,3 @@
-import time
 
 from Views.printView import PrintView
 from Views.gridView import GridView

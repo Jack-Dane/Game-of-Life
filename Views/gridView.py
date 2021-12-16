@@ -1,8 +1,9 @@
 
 import pygame
+from Views.view import View
 
 
-class GridView:
+class GridView(View):
 
     def __init__(self):
         self.res = (600, 600)

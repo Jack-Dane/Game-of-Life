@@ -10,7 +10,7 @@ class GridItem(Model):
         super(GridItem, self).__init__()
         self.x = x
         self.y = y
-        self.active = True if random.randint(0, 5) == 1 else False
+        self.active = True if random.randint(0, 1) == 1 else False
         self.nextIteration = False
 
     def __str__(self):
@@ -50,3 +50,6 @@ class GridItem(Model):
 
     def update(self):
         self.active = self.nextIteration
+
+    def checkSame(self):
+        return self.active == self.nextIteration
