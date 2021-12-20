@@ -1,13 +1,18 @@
 
 import time
-from threading import Thread
+from threading import Thread, Event
 
 
 class GridController(Thread):
 
     def __init__(self, grid):
         super(GridController, self).__init__()
-        self.paused = False
+        self.pausedEvent = Event()
+        self.pausedEvent.set()
+        self.stoppedEvent = Event()
+        self.continueEvent = Event()
+        self.stopped = False
+        self.paused = True
         self.grid = grid
 
     def run(self):
@@ -18,16 +23,36 @@ class GridController(Thread):
         """
         Start the process on a thread
         """
-        while not self.grid.same:
-            if not self.paused:
-                self.grid.update()
+        self.grid.start()
+        while True:
+            self.checkForEvents()
+            self.grid.update()
             time.sleep(.1)
 
+    def checkForEvents(self):
+        if self.pausedEvent.is_set():
+            self.pausedEvent.clear()
+            self.waitForContinue()
+        if self.stoppedEvent.is_set():
+            self.stoppedEvent.clear()
+            self.grid.clearGrid(update=True)
+            self.waitForContinue()
+
+    def clickGridItem(self, x, y):
+        self.grid.checkGridItem(x, y)
+
+    def waitForContinue(self):
+        self.continueEvent.wait()
+        self.continueEvent.clear()
+
     def stopGrid(self):
-        pass
+        self.stoppedEvent.set()
 
     def continueGrid(self):
-        self.paused = False
+        self.continueEvent.set()
 
     def pauseGrid(self):
-        self.paused = True
+        self.pausedEvent.set()
+
+    def gridItemSelected(self, x, y):
+        self.grid.click(x, y)

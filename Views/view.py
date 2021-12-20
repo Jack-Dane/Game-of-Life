@@ -4,6 +4,9 @@ from abc import ABC, abstractmethod
 
 class View(ABC):
 
+    def __init__(self):
+        self.controller = None
+
     @abstractmethod
     def notify(self, subject):
         """
@@ -11,3 +14,6 @@ class View(ABC):
         :param subject: the updated model
         """
         pass
+
+    def addController(self, controller):
+        self.controller = controller

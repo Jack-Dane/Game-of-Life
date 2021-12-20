@@ -12,8 +12,10 @@ class Grid(Model):
         self.columns = columns
         self.grid = []
         self.same = False
+        self.createGrid()
 
     def createGrid(self):
+        self.grid = []
         for row in range(self.rows):
             fullRow = []
             for column in range(self.columns):
@@ -21,6 +23,10 @@ class Grid(Model):
                     GridItem(row, column)
                 )
             self.grid.append(fullRow)
+
+    @iterateGrid
+    def clearGrid(self, x, y):
+        self.grid[y][x].markInactive(nextIteration=True)
 
     def update(self):
         """
@@ -40,6 +46,13 @@ class Grid(Model):
     @iterateGrid
     def updateAllGridItemsNextIteration(self, x, y):
         self.grid[y][x].update()
+
+    def click(self, x, y):
+        self.grid[y][x].toggleActive()
+
+    def start(self):
+        self.update()
+        self.notifyObservers()
 
     def countSurroundingActiveGridItems(self, x, y):
         surroundCount = 0
@@ -66,3 +79,6 @@ class Grid(Model):
 
     def getData(self):
         return self.grid
+
+    def checkGridItem(self, x, y):
+        self.grid[y][x].toggleActive()

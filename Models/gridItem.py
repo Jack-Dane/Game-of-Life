@@ -10,7 +10,8 @@ class GridItem(Model):
         super(GridItem, self).__init__()
         self.x = x
         self.y = y
-        self.active = True if random.randint(0, 1) == 1 else False
+        # self.active = True if random.randint(0, 1) == 1 else False
+        self.active = False
         self.nextIteration = False
 
     def __str__(self):
@@ -25,8 +26,10 @@ class GridItem(Model):
     def markActive(self):
         self.active = True
 
-    def markInactive(self):
+    def markInactive(self, nextIteration=False):
         self.active = False
+        if nextIteration:
+            self.nextIteration = False
 
     def toggleActive(self):
         self.active = not self.active
@@ -43,10 +46,14 @@ class GridItem(Model):
     def shouldDie(self, totalSurrounding):
         if totalSurrounding not in range(2, 4):
             self.nextIteration = False
+        else:
+            self.nextIteration = True
 
     def shouldReproduce(self, totalSurrounding):
         if totalSurrounding == 3:
             self.nextIteration = True
+        else:
+            self.nextIteration = False
 
     def update(self):
         self.active = self.nextIteration
