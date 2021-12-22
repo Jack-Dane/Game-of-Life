@@ -1,6 +1,7 @@
+import sys
 
 import pygame
-from pygame.locals import MOUSEBUTTONDOWN
+from pygame.locals import MOUSEBUTTONDOWN, QUIT
 from threading import Thread
 
 
@@ -32,3 +33,6 @@ class MainWindow(Thread):
             if event.type == MOUSEBUTTONDOWN:
                 mousePosition = pygame.mouse.get_pos()
                 self.checkClicked(mousePosition)
+            elif event.type == QUIT:
+                pygame.quit()
+                sys.exit(0)

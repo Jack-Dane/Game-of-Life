@@ -31,12 +31,12 @@ class GridController(Thread):
 
     def checkForEvents(self):
         if self.pausedEvent.is_set():
-            self.pausedEvent.clear()
             self.waitForContinue()
+            self.pausedEvent.clear()
         if self.stoppedEvent.is_set():
-            self.stoppedEvent.clear()
             self.grid.clearGrid(update=True)
             self.waitForContinue()
+            self.stoppedEvent.clear()
 
     def clickGridItem(self, x, y):
         self.grid.checkGridItem(x, y)
@@ -45,14 +45,22 @@ class GridController(Thread):
         self.continueEvent.wait()
         self.continueEvent.clear()
 
-    def stopGrid(self):
-        self.stoppedEvent.set()
-
-    def continueGrid(self):
+    def startContinueGrid(self):
         self.continueEvent.set()
 
-    def pauseGrid(self):
-        self.pausedEvent.set()
+    def stopPauseGrid(self):
+        if self.pausedEvent.is_set():
+            self.stoppedEvent.set()
+            self.continueEvent.set()
+        else:
+            self.pausedEvent.set()
 
     def gridItemSelected(self, x, y):
         self.grid.click(x, y)
+
+    @property
+    def state(self):
+        # TODO - change to static values in class
+        if self.pausedEvent.is_set():
+            return False
+        return True

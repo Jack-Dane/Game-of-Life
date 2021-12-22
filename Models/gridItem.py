@@ -1,6 +1,4 @@
 
-import random
-
 from Models.model import Model
 
 
@@ -10,7 +8,6 @@ class GridItem(Model):
         super(GridItem, self).__init__()
         self.x = x
         self.y = y
-        # self.active = True if random.randint(0, 1) == 1 else False
         self.active = False
         self.nextIteration = False
 
