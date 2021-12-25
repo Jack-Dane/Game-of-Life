@@ -1,8 +1,9 @@
 
 from Views.view import View
+from Observers.listener import Listener
 
 
-class PrintView(View):
+class PrintView(View, Listener):
 
     def notify(self, subject):
         self.clearScreen()

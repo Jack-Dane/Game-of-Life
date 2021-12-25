@@ -1,8 +1,11 @@
 
+from abc import ABC, abstractmethod
 import pygame
+
 from Views.frame import Frame
 from Views.view import View
 from Views.helpers import ensureScreen
+from Observers.listener import Listener
 
 
 class ButtonControlView(Frame, View):
@@ -15,8 +18,8 @@ class ButtonControlView(Frame, View):
 
     @ensureScreen
     def drawButtons(self):
-        self.startButton.draw(self.screen, self.offsetX, self.offsetY)
-        self.stopButton.draw(self.screen, self.offsetX, self.offsetY)
+        self.startButton.draw()
+        self.stopButton.draw()
 
     def checkClicked(self, mousePosition):
         self.startButton.checkCollision(mousePosition)
@@ -24,48 +27,56 @@ class ButtonControlView(Frame, View):
 
     def addScreen(self, screen):
         Frame.addScreen(self, screen)
+        self.startButton = ButtonCreator.createButton("start", self.controller, self.screen, self.offsetX, self.offsetY)
+        self.stopButton = ButtonCreator.createButton("stop/pause", self.controller, self.screen, self.offsetX, self.offsetY)
         self.drawButtons()
 
     def addController(self, controller):
         View.addController(self, controller)
-        self.startButton = ButtonCreator.createButton("start", self.controller)
-        self.stopButton = ButtonCreator.createButton("stop/pause", self.controller)
 
     def notify(self, subject):
-        """
-        Easy way to know when to update the text on the buttons
-        Would be better to listen to the controller directly though
-        A race condition could occur here where it doesn't get updated
-        """
-        self.drawButtons()
+        pass
 
 
 class ButtonCreator:
 
     @staticmethod
-    def createButton(buttonName, controller):
+    def createButton(buttonName, controller, screen, offsetX, offsetY):
         if buttonName == "start":
-            return StartContinueButton(controller, (0, 61, 6), 5, 0)
+            return StartContinueButton(controller, (0, 61, 6), 5, 0, screen, offsetX, offsetY)
         elif buttonName == "stop/pause":
-            return StopPauseButton(controller, (166, 71, 0), 205, 0)
+            return StopPauseButton(controller, (166, 71, 0), 205, 0, screen, offsetX, offsetY)
         raise NotImplemented()
 
 
-class Button:
+class Drawable(ABC):
 
-    def __init__(self, color, x, y):
-        self.drawObject = None
+    def __init__(self, x, y, screen, offsetX, offsetY):
+        self.screen = screen
+        self.offsetX = offsetX
+        self.offsetY = offsetY
         self.x = x
         self.y = y
+
+    @abstractmethod
+    def draw(self):
+        raise NotImplementedError()
+
+
+class Button(Drawable):
+
+    def __init__(self, color, *args):
+        super(Button, self).__init__(*args)
+        self.drawObject = None
         self.color = color
 
-    def draw(self, screen, offsetX, offsetY):
+    def draw(self):
         self.drawObject = pygame.draw.rect(
-            screen,
+            self.screen,
             self.color,
             pygame.Rect(
-                self.x + offsetX,
-                self.y + offsetY,
+                self.x + self.offsetX,
+                self.y + self.offsetY,
                 190,
                 30
             )
@@ -79,66 +90,61 @@ class Button:
         raise NotImplementedError()
 
 
-class Text:
+class Text(Drawable):
 
-    def __init__(self, text, x, y):
-        self.x = x
-        self.y = y
+    def __init__(self, *args, text=""):
+        super(Text, self).__init__(*args)
         self._text = text
         self.font = pygame.font.SysFont("Ariel", 18)
         self.fontColor = 255, 255, 255
 
-    @property
-    def text(self):
-        return self._text
-
-    def draw(self, screen, offsetX, offsetY):
-        screen.blit(
-            self.font.render(self.text, True, self.fontColor),
-            (50 + offsetX + self.x, 10 + offsetY + self.y)
+    def draw(self):
+        self.screen.blit(
+            self.font.render(self._text, True, self.fontColor),
+            (50 + self.offsetX + self.x, 10 + self.offsetY + self.y)
         )
 
 
-class TextButton(Button, Text):
+class TextButton(Button, Text, ABC):
 
-    def __init__(self, *args):
-        Button.__init__(self, *args)
+    def __init__(self, color, *args):
+        Button.__init__(self, color, *args)
         Text.__init__(self, *args)
 
-    @property
-    def text(self):
-        return ""
-
-    def draw(self, screen, offsetX, offsetY):
-        Button.draw(self, screen, offsetX, offsetY)
-        Text.draw(self, screen, offsetX, offsetY)
+    def draw(self):
+        Button.draw(self)
+        Text.draw(self)
 
 
-class StopPauseButton(TextButton):
+class StopPauseButton(TextButton, Listener):
 
     def __init__(self, controller, *args):
         super(StopPauseButton, self).__init__(*args)
         self.controller = controller
+        self.controller.addObserver(self)
+        self._text = "Pause"
 
     def click(self):
         self.controller.stopPauseGrid()
 
-    @property
-    def text(self):
-        if self.controller.state:
-            return "Pause"
-        return "Stop"
+    def notify(self, subject):
+        if subject.getData():
+            self._text = "Pause"
+        else:
+            self._text = "Stop"
+        self.draw()
 
 
-class StartContinueButton(TextButton):
+class StartContinueButton(TextButton, Listener):
 
     def __init__(self, controller, *args):
         super(StartContinueButton, self).__init__(*args)
         self.controller = controller
+        self.controller.addObserver(self)
+        self._text = "Start"
 
     def click(self):
         self.controller.startContinueGrid()
 
-    @property
-    def text(self):
-        return "Start"
+    def notify(self, subject):
+        self.draw()

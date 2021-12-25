@@ -1,5 +1,5 @@
 
-from Models.model import Model
+from Observers.observer import Model
 
 
 class GridItem(Model):

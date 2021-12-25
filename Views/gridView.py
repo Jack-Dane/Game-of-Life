@@ -3,9 +3,10 @@ import pygame
 from Views.view import View
 from Views.frame import Frame
 from Views.helpers import ensureScreen
+from Observers.listener import Listener
 
 
-class GridView(View, Frame):
+class GridView(View, Frame, Listener):
 
     def __init__(self):
         Frame.__init__(self)

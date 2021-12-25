@@ -1,6 +1,6 @@
 
 from Models.gridItem import GridItem
-from Models.model import Model
+from Observers.observer import Model
 from Models.helpers import iterateGrid
 
 
