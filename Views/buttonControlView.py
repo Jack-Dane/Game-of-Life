@@ -27,8 +27,8 @@ class ButtonControlView(Frame, View):
 
     def addScreen(self, screen):
         Frame.addScreen(self, screen)
-        self.startButton = ButtonCreator.createButton("start", self.controller, self.screen, self.offsetX, self.offsetY)
-        self.stopButton = ButtonCreator.createButton("stop/pause", self.controller, self.screen, self.offsetX, self.offsetY)
+        self.startButton = self.createButton("start")
+        self.stopButton = self.createButton("stop/pause")
         self.drawButtons()
 
     def addController(self, controller):
@@ -37,15 +37,15 @@ class ButtonControlView(Frame, View):
     def notify(self, subject):
         pass
 
-
-class ButtonCreator:
-
-    @staticmethod
-    def createButton(buttonName, controller, screen, offsetX, offsetY):
+    def createButton(self, buttonName):
         if buttonName == "start":
-            return StartContinueButton(controller, (0, 61, 6), 5, 0, screen, offsetX, offsetY)
+            return StartContinueButton(
+                self.controller, (0, 61, 6), 5, 0, self.screen, self.offsetX, self.offsetY
+            )
         elif buttonName == "stop/pause":
-            return StopPauseButton(controller, (166, 71, 0), 205, 0, screen, offsetX, offsetY)
+            return StopPauseButton(
+                self.controller, (166, 71, 0), 205, 0, self.screen, self.offsetX, self.offsetY
+            )
         raise NotImplemented()
 
 

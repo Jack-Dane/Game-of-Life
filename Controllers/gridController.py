@@ -1,15 +1,17 @@
 
 import time
-from threading import Thread, Event
+from threading import Event
 
 from Observers.observer import Model
+from Threads.thread import ThreadObject
 
 
-class GridController(Thread, Model):
+class GridController(ThreadObject, Model):
 
     def __init__(self, grid):
-        Thread.__init__(self)
+        ThreadObject.__init__(self)
         Model.__init__(self)
+        self.stopThreadEvent = Event()
         self.pausedEvent = Event()
         self.pausedEvent.set()
         self.stoppedEvent = Event()
@@ -17,18 +19,16 @@ class GridController(Thread, Model):
         self.grid = grid
 
     def run(self):
-        super(GridController, self).run()
-        self.startGrid()
+        self.grid.start()
+        ThreadObject.run(self)
 
-    def startGrid(self):
+    def loopExecution(self):
         """
         Start the process on a thread
         """
-        self.grid.start()
-        while True:
-            self.checkForEvents()
-            self.grid.update()
-            time.sleep(.1)
+        self.checkForEvents()
+        self.grid.update()
+        time.sleep(.1)
 
     def checkForEvents(self):
         if self.pausedEvent.is_set():
@@ -60,6 +60,12 @@ class GridController(Thread, Model):
 
     def gridItemSelected(self, x, y):
         self.grid.click(x, y)
+
+    def stopThread(self):
+        self.stoppedEvent.clear()
+        self.pausedEvent.clear()
+        self.continueEvent.set()
+        ThreadObject.stopThread(self)
 
     @property
     def state(self):

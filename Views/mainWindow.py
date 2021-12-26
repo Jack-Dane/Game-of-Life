@@ -2,10 +2,10 @@ import sys
 
 import pygame
 from pygame.locals import MOUSEBUTTONDOWN, QUIT
-from threading import Thread
+from Threads.thread import ThreadObject
 
 
-class MainWindow(Thread):
+class MainWindow(ThreadObject):
 
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -22,10 +22,9 @@ class MainWindow(Thread):
         for frame in self.frames:
             frame.checkClicked(mousePosition)
 
-    def run(self):
-        while True:
-            self.checkEvents()
-            pygame.display.flip()
+    def loopExecution(self):
+        self.checkEvents()
+        pygame.display.flip()
 
     def checkEvents(self):
         events = pygame.event.get()
@@ -36,3 +35,7 @@ class MainWindow(Thread):
             elif event.type == QUIT:
                 pygame.quit()
                 sys.exit(0)
+
+    def stopThread(self):
+        super(MainWindow, self).stopThread()
+        pygame.quit()
