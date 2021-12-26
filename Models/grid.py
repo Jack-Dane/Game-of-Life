@@ -1,10 +1,10 @@
 
 from Models.gridItem import GridItem
-from Observers.observer import Model
+from Observers.subject import Subject
 from Models.helpers import iterateGrid
 
 
-class Grid(Model):
+class Grid(Subject):
 
     def __init__(self, rows, columns):
         super().__init__()

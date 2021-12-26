@@ -10,12 +10,13 @@ from Models.grid import Grid
 
 threads = []
 
+
 def main():
-    # view = PrintView()
+    view = PrintView()
     gridView = GridView()
     buttonControlView = ButtonControlView()
     grid = Grid(30, 30)
-    # grid.addObserver(view)
+    grid.addObserver(view)
     grid.addObserver(gridView)
     grid.addObserver(buttonControlView)
 

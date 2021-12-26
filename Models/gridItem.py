@@ -1,8 +1,8 @@
 
-from Observers.observer import Model
+from Observers.subject import Subject
 
 
-class GridItem(Model):
+class GridItem(Subject):
 
     def __init__(self, x, y):
         super(GridItem, self).__init__()

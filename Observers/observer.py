@@ -1,25 +1,13 @@
 
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
 
-class Model(ABC):
-
-    def __init__(self):
-        self.observers = []
-
-    def addObserver(self, observer):
-        self.observers.append(observer)
-
-    def removeObserver(self, observer):
-        self.observers.remove(observer)
-
-    def notifyObservers(self):
-        for observer in self.observers:
-            observer.notify(self)
+class Observer:
 
     @abstractmethod
-    def getData(self):
+    def notify(self, subject):
         """
-        Return the data, different for every model
+        Notify the view that the model has been updated
+        :param subject: the updated model
         """
-        return NotImplemented
+        raise NotImplementedError()

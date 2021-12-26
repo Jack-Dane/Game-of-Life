@@ -5,7 +5,7 @@ import pygame
 from Views.frame import Frame
 from Views.view import View
 from Views.helpers import ensureScreen
-from Observers.listener import Listener
+from Observers.observer import Observer
 
 
 class ButtonControlView(Frame, View):
@@ -116,7 +116,7 @@ class TextButton(Button, Text, ABC):
         Text.draw(self)
 
 
-class StopPauseButton(TextButton, Listener):
+class StopPauseButton(TextButton, Observer):
 
     def __init__(self, controller, *args):
         super(StopPauseButton, self).__init__(*args)
@@ -135,7 +135,7 @@ class StopPauseButton(TextButton, Listener):
         self.draw()
 
 
-class StartContinueButton(TextButton, Listener):
+class StartContinueButton(TextButton, Observer):
 
     def __init__(self, controller, *args):
         super(StartContinueButton, self).__init__(*args)

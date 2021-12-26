@@ -2,15 +2,15 @@
 import time
 from threading import Event
 
-from Observers.observer import Model
+from Observers.subject import Subject
 from Threads.thread import ThreadObject
 
 
-class GridController(ThreadObject, Model):
+class GridController(ThreadObject, Subject):
 
     def __init__(self, grid):
         ThreadObject.__init__(self)
-        Model.__init__(self)
+        Subject.__init__(self)
         self.stopThreadEvent = Event()
         self.pausedEvent = Event()
         self.pausedEvent.set()
