@@ -12,6 +12,7 @@ class MainWindow(ThreadObject):
         pygame.init()
         self.res = (620, 660)
         self.screen = pygame.display.set_mode(self.res)
+        self.screen.fill((42, 0, 51))
         self.frames = []
 
     def addFrame(self, frame):

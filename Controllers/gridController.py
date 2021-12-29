@@ -76,3 +76,6 @@ class GridController(ThreadObject, Subject):
 
     def getData(self):
         return self.state
+
+    def getGenerationCounter(self):
+        return self.grid.generationNumber

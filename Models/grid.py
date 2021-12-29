@@ -12,6 +12,7 @@ class Grid(Subject):
         self.columns = columns
         self.grid = []
         self.same = False
+        self.generationNumber = 0
         self.createGrid()
 
     def createGrid(self):
@@ -27,11 +28,13 @@ class Grid(Subject):
     @iterateGrid
     def clearGrid(self, x, y):
         self.grid[y][x].markInactive(nextIteration=True)
+        self.generationNumber = 0
 
     def update(self):
         """
         Update the list items to reflect the game of life
         """
+        self.generationNumber += 1
         self.updateGridItem()
         self.same = self.checkSame()
         self.updateAllGridItemsNextIteration()

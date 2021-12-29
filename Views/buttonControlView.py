@@ -15,11 +15,13 @@ class ButtonControlView(Frame, View):
         pygame.font.init()
         self.startButton = None
         self.stopButton = None
+        self.generationCounter = None
 
     @ensureScreen
     def drawButtons(self):
         self.startButton.draw()
         self.stopButton.draw()
+        self.generationCounter.draw()
 
     def checkClicked(self, mousePosition):
         self.startButton.checkCollision(mousePosition)
@@ -27,24 +29,30 @@ class ButtonControlView(Frame, View):
 
     def addScreen(self, screen):
         Frame.addScreen(self, screen)
-        self.startButton = self.createButton("start")
-        self.stopButton = self.createButton("stop/pause")
+        self.startButton = self.createDrawable("start")
+        self.stopButton = self.createDrawable("stop/pause")
+        self.generationCounter = self.createDrawable("genCounter")
         self.drawButtons()
 
     def addController(self, controller):
         View.addController(self, controller)
 
     def notify(self, subject):
-        pass
+        if self.generationCounter:
+            self.generationCounter.updateGenerationCounter()
 
-    def createButton(self, buttonName):
-        if buttonName == "start":
+    def createDrawable(self, name):
+        if name == "start":
             return StartContinueButton(
                 self.controller, (0, 61, 6), 5, 0, self.screen, self.offsetX, self.offsetY
             )
-        elif buttonName == "stop/pause":
+        elif name == "stop/pause":
             return StopPauseButton(
                 self.controller, (166, 71, 0), 205, 0, self.screen, self.offsetX, self.offsetY
+            )
+        elif name == "genCounter":
+            return GenerationCounter(
+                self.controller, 405, 0, self.screen, self.offsetX, self.offsetY
             )
         raise NotImplemented()
 
@@ -99,10 +107,28 @@ class Text(Drawable):
         self.fontColor = 255, 255, 255
 
     def draw(self):
+        pygame.draw.rect(
+            self.screen,
+            (0, 0, 0),
+            pygame.Rect(
+                50 + self.offsetX + self.x,
+                10 + self.offsetY + self.y - 1,
+                self._backgroundWidth,
+                self._backgroundHeight
+            )
+        )
         self.screen.blit(
             self.font.render(self._text, True, self.fontColor),
             (50 + self.offsetX + self.x, 10 + self.offsetY + self.y)
         )
+
+    @property
+    def _backgroundWidth(self):
+        return 0
+
+    @property
+    def _backgroundHeight(self):
+        return self.font.get_height()
 
 
 class TextButton(Button, Text, ABC):
@@ -114,6 +140,25 @@ class TextButton(Button, Text, ABC):
     def draw(self):
         Button.draw(self)
         Text.draw(self)
+
+
+class GenerationCounter(Text):
+
+    def __init__(self, controller, *args):
+        super(GenerationCounter, self).__init__(*args)
+        self.controller = controller
+        self._setText()
+
+    def updateGenerationCounter(self):
+        self._setText()
+        self.draw()
+
+    def _setText(self):
+        self._text = f"Evolution N.O: {self.controller.getGenerationCounter()}"
+
+    @property
+    def _backgroundWidth(self):
+        return 120
 
 
 class StopPauseButton(TextButton, Observer):
