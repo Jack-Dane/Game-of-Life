@@ -30,14 +30,15 @@ class Grid(Subject):
         self.grid[y][x].markInactive(nextIteration=True)
         self.generationNumber = 0
 
-    def update(self):
+    def update(self, updateGeneration=True):
         """
         Update the list items to reflect the game of life
         """
-        self.generationNumber += 1
         self.updateGridItem()
         self.same = self.checkSame()
         self.updateAllGridItemsNextIteration()
+        if updateGeneration:
+            self.generationNumber += 1
         self.notifyObservers()
 
     @iterateGrid
@@ -54,8 +55,7 @@ class Grid(Subject):
         self.grid[y][x].toggleActive()
 
     def start(self):
-        self.update()
-        self.notifyObservers()
+        self.update(updateGeneration=False)
 
     def countSurroundingActiveGridItems(self, x, y):
         surroundCount = 0

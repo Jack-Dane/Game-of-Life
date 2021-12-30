@@ -12,11 +12,11 @@ threads = []
 
 
 def main():
-    view = PrintView()
+    printView = PrintView()
     gridView = GridView()
     buttonControlView = ButtonControlView()
     grid = Grid(30, 30)
-    grid.addObserver(view)
+    grid.addObserver(printView)
     grid.addObserver(gridView)
     grid.addObserver(buttonControlView)
 

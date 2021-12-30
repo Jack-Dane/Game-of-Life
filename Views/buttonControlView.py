@@ -54,7 +54,7 @@ class ButtonControlView(Frame, View):
             return GenerationCounter(
                 self.controller, 405, 0, self.screen, self.offsetX, self.offsetY
             )
-        raise NotImplemented()
+        raise NotImplementedError()
 
 
 class Drawable(ABC):

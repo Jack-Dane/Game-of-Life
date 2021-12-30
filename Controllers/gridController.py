@@ -13,8 +13,8 @@ class GridController(ThreadObject, Subject):
         Subject.__init__(self)
         self.stopThreadEvent = Event()
         self.pausedEvent = Event()
-        self.pausedEvent.set()
         self.stoppedEvent = Event()
+        self.stoppedEvent.set()
         self.continueEvent = Event()
         self.grid = grid
 
@@ -31,12 +31,13 @@ class GridController(ThreadObject, Subject):
         time.sleep(.1)
 
     def checkForEvents(self):
+        self.notifyObservers()
         if self.pausedEvent.is_set():
-            self.notifyObservers()
             self.waitForContinue()
             self.pausedEvent.clear()
         if self.stoppedEvent.is_set():
-            self.grid.clearGrid(update=True)
+            if self.grid.generationNumber != 0:
+                self.grid.clearGrid(update=True)
             self.waitForContinue()
             self.stoppedEvent.clear()
         self.notifyObservers()
@@ -55,7 +56,7 @@ class GridController(ThreadObject, Subject):
         if self.pausedEvent.is_set():
             self.stoppedEvent.set()
             self.continueEvent.set()
-        else:
+        elif not self.stoppedEvent.is_set():
             self.pausedEvent.set()
 
     def gridItemSelected(self, x, y):
@@ -70,9 +71,11 @@ class GridController(ThreadObject, Subject):
     @property
     def state(self):
         """
-        :return: False if paused else True
+        :return: False if stopped or paused
         """
-        return False if self.pausedEvent.is_set() else True
+        if self.stoppedEvent.is_set() or self.pausedEvent.is_set():
+            return False
+        return True
 
     def getData(self):
         return self.state
