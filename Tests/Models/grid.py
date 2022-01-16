@@ -101,18 +101,18 @@ class Test_Grid_CountSurroundingActiveGridItems(TestSpecificGridConfiguration):
 
 class Test_Grid_GetActiveStatusFromGridItems(TestSpecificGridConfiguration):
 
-    def test_correctResult(self):
+    def test_correct_result(self):
         for y in range(self._grid.rows):
             for x in range(self._grid.columns):
                 status = self._grid.getActiveStatusFromGridItems(x, y)
                 self.assertEqual(status, self.displayGrid[y][x])
 
-    def test_indexOutOfRange(self):
+    def test_index_out_of_range(self):
         status = self._grid.getActiveStatusFromGridItems(10, 10)
 
         self.assertEqual(status, False)
 
-    def test_negativeIndex(self):
+    def test_negative_index(self):
         status = self._grid.getActiveStatusFromGridItems(-1, -1)
 
         self.assertEqual(status, False)
@@ -120,7 +120,7 @@ class Test_Grid_GetActiveStatusFromGridItems(TestSpecificGridConfiguration):
 
 class Test_Grid_CheckSame(TestSpecificGridConfiguration):
 
-    def changeNextGridItems(self, grid):
+    def change_next_grid_items(self, grid):
         for y in range(self._rows):
             for x in range(self._columns):
                 self._grid.grid[y][x].nextIteration = grid[y][x]
