@@ -31,6 +31,9 @@ class GridController(ThreadObject, Subject):
         time.sleep(.1)
 
     def checkForEvents(self):
+        """
+        Check for new events pause and stop
+        """
         self.notifyObservers()
         if self.pausedEvent.is_set():
             self.waitForContinue()
@@ -46,6 +49,9 @@ class GridController(ThreadObject, Subject):
         self.grid.checkGridItem(x, y)
 
     def waitForContinue(self):
+        """
+        Wait for the continue event
+        """
         self.continueEvent.wait()
         self.continueEvent.clear()
 
@@ -53,6 +59,10 @@ class GridController(ThreadObject, Subject):
         self.continueEvent.set()
 
     def stopPauseGrid(self):
+        """
+        Call to stop or pause the grid
+        The controller will know how to handle this request
+        """
         if self.pausedEvent.is_set():
             self.stoppedEvent.set()
             self.continueEvent.set()
@@ -63,6 +73,9 @@ class GridController(ThreadObject, Subject):
         self.grid.click(x, y)
 
     def stopThread(self):
+        """
+        Stop the GridController thread nicely
+        """
         self.stoppedEvent.clear()
         self.pausedEvent.clear()
         self.continueEvent.set()
