@@ -28,6 +28,10 @@ class ButtonControlView(Frame, View):
         self.stopButton.checkCollision(mousePosition)
 
     def addScreen(self, screen):
+        """
+        Call to add the screen to the view which will then create the objects to draw
+        :param screen: Screen to add
+        """
         Frame.addScreen(self, screen)
         self.startButton = self.createDrawable("start")
         self.stopButton = self.createDrawable("stop/pause")
@@ -42,6 +46,11 @@ class ButtonControlView(Frame, View):
             self.generationCounter.updateGenerationCounter()
 
     def createDrawable(self, name):
+        """
+        Returns a Drawable object differing depending on the name parameter
+        :param name: name of the object to return
+        :return: Drawable object instance
+        """
         if name == "start":
             return StartContinueButton(
                 self.controller, (0, 61, 6), 5, 0, self.screen, self.offsetX, self.offsetY
@@ -68,6 +77,9 @@ class Drawable(ABC):
 
     @abstractmethod
     def draw(self):
+        """
+        Method to draw the drawable object
+        """
         raise NotImplementedError()
 
 
@@ -91,6 +103,10 @@ class Button(Drawable):
         )
 
     def checkCollision(self, mousePosition):
+        """
+        Check to see if the button has been clicked
+        :param mousePosition: (x, y) click position
+        """
         if self.drawObject.collidepoint(mousePosition):
             self.click()
 
