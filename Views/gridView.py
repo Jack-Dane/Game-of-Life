@@ -16,6 +16,9 @@ class GridView(View, Frame, Observer):
 
     @ensureScreen
     def drawGrid(self):
+        """
+        draw each of the gridItems
+        """
         for row in self.gridItemViews:
             for gridItemView in row:
                 gridItemView.draw(
@@ -26,6 +29,10 @@ class GridView(View, Frame, Observer):
 
     @ensureScreen
     def initSubject(self, subject):
+        """
+        create the grid item array based on the model/subject
+        :param subject: grid model/subject
+        """
         for row in range(0, subject.rows):
             rowLst = []
             for column in range(0, subject.columns):
@@ -42,7 +49,7 @@ class GridView(View, Frame, Observer):
 
     def notify(self, subject):
         """ Update function that is called when the grid has been updated
-        If the grid array is empty intialise it
+        If the grid array is empty initialise it
         """
         if not self.gridItemViews:
             self.initSubject(subject)
@@ -58,7 +65,7 @@ class GridView(View, Frame, Observer):
                 if gridItemView.checkClicked(mousePosition):
                     self.controller.clickGridItem(gridItemView.x, gridItemView.y)
                     gridItemView.draw(self.screen, self.offsetX, self.offsetY)
-                    break  # no need to search any others
+                    return  # no need to search any others
 
 
 class GridItemView:
