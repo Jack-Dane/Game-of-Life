@@ -3,15 +3,15 @@ from unittest import TestCase
 from unittest.mock import patch, MagicMock
 from pygame.locals import MOUSEBUTTONDOWN, QUIT
 
-from Views.mainWindow import MainWindow
+from gameOfLife.Views.mainWindow import MainWindow
 
 
 class Test_MainWindow_checkEvents(TestCase):
 
     def setUp(self):
-        self.threadObjectPatch = patch("Views.mainWindow.ThreadObject")
+        self.threadObjectPatch = patch("gameOfLife.Views.mainWindow.ThreadObject")
         self.threadObjectPatch.start()
-        self.pygamePatch = patch("Views.mainWindow.pygame")
+        self.pygamePatch = patch("gameOfLife.Views.mainWindow.pygame")
         self.pygame = self.pygamePatch.start()
 
         self.mainWindow = MainWindow()

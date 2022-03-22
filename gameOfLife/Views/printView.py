@@ -1,6 +1,6 @@
 
-from Views.view import View
-from Observers.observer import Observer
+from gameOfLife.Views.view import View
+from gameOfLife.Observers.observer import Observer
 
 
 class PrintView(View, Observer):

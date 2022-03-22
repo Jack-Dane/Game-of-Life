@@ -2,7 +2,7 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
 
-from Views.helpers import ensureScreen, NoScreenAssignedException
+from gameOfLife.Views.helpers import ensureScreen, NoScreenAssignedException
 
 
 class TestObject:

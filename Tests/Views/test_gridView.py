@@ -2,7 +2,7 @@
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
-from Views.gridView import GridView
+from gameOfLife.Views.gridView import GridView
 
 
 class GridTests(TestCase):
@@ -35,7 +35,7 @@ class Test_GridView_drawGrid(GridTests):
                 )
 
 
-@patch("Views.gridView.GridItemView", return_value="gridViewItem")
+@patch("gameOfLife.Views.gridView.GridItemView", return_value="gridViewItem")
 class Test_GridView_initSubject(TestCase):
 
     def test_ok(self, gridViewItem):

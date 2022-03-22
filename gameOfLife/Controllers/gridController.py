@@ -2,8 +2,8 @@
 import time
 from threading import Event
 
-from Observers.subject import Subject
-from Threads.thread import ThreadObject
+from gameOfLife.Observers.subject import Subject
+from gameOfLife.Threads.thread import ThreadObject
 
 
 class GridController(ThreadObject, Subject):

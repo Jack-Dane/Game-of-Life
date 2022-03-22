@@ -1,5 +1,5 @@
 
-from Observers.subject import Subject
+from gameOfLife.Observers.subject import Subject
 
 
 class GridItem(Subject):

@@ -2,7 +2,7 @@
 from unittest import TestCase
 from unittest.mock import MagicMock
 
-from Models.gridItem import GridItem
+from gameOfLife.Models.gridItem import GridItem
 
 
 class GridItemTests(TestCase):

@@ -2,7 +2,7 @@
 from unittest import TestCase
 from unittest.mock import patch, MagicMock
 
-from Views.buttonControlView import (
+from gameOfLife.Views.buttonControlView import (
     ButtonControlView, StartContinueButton, StopPauseButton, GenerationCounter, Button, Text
 )
 

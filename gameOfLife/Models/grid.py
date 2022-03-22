@@ -1,7 +1,7 @@
 
-from Models.gridItem import GridItem
-from Observers.subject import Subject
-from Models.helpers import iterateGrid
+from gameOfLife.Models.gridItem import GridItem
+from gameOfLife.Observers.subject import Subject
+from gameOfLife.Models.helpers import iterateGrid
 
 
 class Grid(Subject):

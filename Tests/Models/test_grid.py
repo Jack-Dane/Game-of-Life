@@ -3,8 +3,8 @@ import random
 from unittest import TestCase
 from unittest.mock import MagicMock
 
-from Models.grid import Grid
-from Models.gridItem import GridItem
+from gameOfLife.Models.grid import Grid
+from gameOfLife.Models.gridItem import GridItem
 
 
 class Test_Grid_CreateGrid(TestCase):
@@ -120,7 +120,7 @@ class Test_Grid_GetActiveStatusFromGridItems(TestSpecificGridConfiguration):
 
 class Test_Grid_CheckSame(TestSpecificGridConfiguration):
 
-    def change_next_grid_items(self, grid):
+    def changeNextGridItems(self, grid):
         for y in range(self._rows):
             for x in range(self._columns):
                 self._grid.grid[y][x].nextIteration = grid[y][x]

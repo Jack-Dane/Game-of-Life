@@ -2,10 +2,10 @@
 from abc import ABC, abstractmethod
 import pygame
 
-from Views.frame import Frame
-from Views.view import View
-from Views.helpers import ensureScreen
-from Observers.observer import Observer
+from gameOfLife.Views.frame import Frame
+from gameOfLife.Views.view import View
+from gameOfLife.Views.helpers import ensureScreen
+from gameOfLife.Observers.observer import Observer
 
 
 class ButtonControlView(Frame, View):

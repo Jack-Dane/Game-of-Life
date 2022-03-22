@@ -2,7 +2,7 @@ import sys
 
 import pygame
 from pygame.locals import MOUSEBUTTONDOWN, QUIT
-from Threads.thread import ThreadObject
+from gameOfLife.Threads.thread import ThreadObject
 
 
 class MainWindow(ThreadObject):

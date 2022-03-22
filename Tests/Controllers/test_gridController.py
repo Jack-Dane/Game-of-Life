@@ -2,7 +2,7 @@
 from unittest import TestCase
 from unittest.mock import MagicMock, Mock
 
-from Controllers.gridController import GridController
+from gameOfLife.Controllers.gridController import GridController
 
 
 class GridControllerTests(TestCase):

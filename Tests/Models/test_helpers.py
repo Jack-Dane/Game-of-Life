@@ -1,8 +1,8 @@
 
 from unittest import TestCase
-from unittest.mock import MagicMock, Mock
+from unittest.mock import Mock
 
-from Models.helpers import iterateGrid
+from gameOfLife.Models.helpers import iterateGrid
 
 
 class FunctionMockWrap(Mock):
