@@ -13,3 +13,8 @@ how they play out throughout the evolutions.
 ## How to use
 Once the game window is open you can add start to click on the grid blocks to set them "alive" 
 and then click the "start" button at the bottom of the screen. 
+
+## Demo
+Here is a quick demo of how the game of life application looks!
+
+![Game of life demo gif](Assets/demo.gif)
